@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/HeroSection";
 import { TripCalculator } from "@/components/TripCalculator";
 import { ThemeParkExplorer } from "@/components/ThemeParkExplorer";
 import { BookingSection } from "@/components/BookingSection";
+import { RestaurantsExperiences } from "@/components/RestaurantsExperiences";
 import { GamificationBar } from "@/components/GamificationBar";
 import { Footer } from "@/components/Footer";
 
@@ -15,6 +16,7 @@ const Index = () => {
       <BookingSection />
       <TripCalculator />
       <ThemeParkExplorer />
+      <RestaurantsExperiences />
       <Footer />
     </div>
   );
