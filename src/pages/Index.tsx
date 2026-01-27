@@ -5,6 +5,7 @@ import { ThemeParkExplorer } from "@/components/ThemeParkExplorer";
 import { BookingSection } from "@/components/BookingSection";
 import { RestaurantsExperiences } from "@/components/RestaurantsExperiences";
 import { GamificationBar } from "@/components/GamificationBar";
+import { InteractiveGlobe } from "@/components/InteractiveGlobe";
 import { Footer } from "@/components/Footer";
 
 const Index = () => {
@@ -13,6 +14,7 @@ const Index = () => {
       <Navigation />
       <HeroSection />
       <GamificationBar />
+      <InteractiveGlobe />
       <BookingSection />
       <TripCalculator />
       <ThemeParkExplorer />
