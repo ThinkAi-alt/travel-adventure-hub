@@ -7,7 +7,8 @@ import { MapPin, Ship, Building2, Landmark, X, ExternalLink, Plus } from "lucide
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { ItineraryPanel } from "./itinerary/ItineraryPanel";
-import { useItinerary } from "./itinerary/useItinerary";
+
+import { FlightPaths } from "./itinerary/FlightPaths";
 import { locations, getTypeColor } from "./itinerary/locations-data";
 import { Location } from "./itinerary/types";
 
@@ -83,10 +84,12 @@ const Marker = ({ location, onClick, isInItinerary }: MarkerProps) => {
 
 const Globe = ({ 
   onLocationClick, 
-  itineraryIds 
+  itineraryIds,
+  itineraryItems
 }: { 
   onLocationClick: (location: Location) => void;
   itineraryIds: Set<string>;
+  itineraryItems: import("./itinerary/types").ItineraryItem[];
 }) => {
   const globeRef = useRef<THREE.Mesh>(null);
   
@@ -127,6 +130,9 @@ const Globe = ({
         />
       </Sphere>
       
+      {/* Flight Paths */}
+      <FlightPaths items={itineraryItems} />
+
       {/* Markers */}
       {locations.map((location) => (
         <Marker 
@@ -257,19 +263,27 @@ const FilterButton = ({
   );
 };
 
-export const InteractiveGlobe = () => {
+interface InteractiveGlobeProps {
+  itineraryItems: import("./itinerary/types").ItineraryItem[];
+  isPanelOpen: boolean;
+  addLocation: (location: Location) => void;
+  removeLocation: (id: string) => void;
+  reorderItems: (items: import("./itinerary/types").ItineraryItem[]) => void;
+  clearAll: () => void;
+  togglePanel: () => void;
+}
+
+export const InteractiveGlobe = ({
+  itineraryItems,
+  isPanelOpen,
+  addLocation,
+  removeLocation,
+  reorderItems,
+  clearAll,
+  togglePanel,
+}: InteractiveGlobeProps) => {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [activeFilter, setActiveFilter] = useState<Location["type"] | "all">("all");
-  
-  const {
-    items: itineraryItems,
-    isPanelOpen,
-    addLocation,
-    removeLocation,
-    reorderItems,
-    clearAll,
-    togglePanel
-  } = useItinerary();
 
   const itineraryIds = new Set(itineraryItems.map(item => item.id));
   
@@ -337,7 +351,7 @@ export const InteractiveGlobe = () => {
               <directionalLight position={[5, 3, 5]} intensity={1} />
               <pointLight position={[-10, -10, -10]} intensity={0.3} />
               <Stars radius={100} depth={50} count={2000} factor={4} saturation={0} fade speed={1} />
-              <Globe onLocationClick={handleMarkerClick} itineraryIds={itineraryIds} />
+              <Globe onLocationClick={handleMarkerClick} itineraryIds={itineraryIds} itineraryItems={itineraryItems} />
               <OrbitControls 
                 enableZoom={true} 
                 enablePan={false} 
